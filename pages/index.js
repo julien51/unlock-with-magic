@@ -1,55 +1,63 @@
-import { useUser } from '../lib/hooks'
+import { Magic } from 'magic-sdk';
+import { useState } from 'react'
 import Layout from '../components/layout'
+import { ethers } from 'ethers'
+import { useUnlockPaywall } from '../lib/unlock-paywall'
+import { useEffect } from 'react'
 
 const Home = () => {
-  const user = useUser()
+  const [user, setUser] = useState(null)
+  const [email, setEmail] = useState('julien.genestoux@gmail.com')
+  const { purchase } = useUnlockPaywall()
+
+  const login = async (evt) => {
+    evt.preventDefault()
+
+    const magic = new Magic(process.env.NEXT_PUBLIC_MAGIC_PUBLISHABLE_KEY, {
+      network: {
+        rpcUrl: 'https://rpc.unlock-protocol.com/5',
+        chainId: 5
+      }
+    })
+
+    const didToken = await magic.auth.loginWithMagicLink({
+      email,
+    })
+
+    const provider = new ethers.providers.Web3Provider(magic.rpcProvider);
+    const signer = provider.getSigner();
+    const address = await signer.getAddress();
+    const balance = ethers.utils.formatEther(
+      await provider.getBalance(userAddress), // Balance is in wei
+    );
+    console.log({ address, balance })
+
+  }
 
   return (
     <Layout>
-      <h1>Magic Example</h1>
-
-      <p>Steps to test this authentication example:</p>
+      <h1> Unlock + Magic Example</h1>
 
       <ol>
-        <li>Click Login and enter an email.</li>
+        <li>Enter an email.</li>
         <li>
-          You'll be redirected to Home. Click on Profile, notice how your
-          session is being used through a token stored in a cookie.
+          You'll be redirected to Home. Then, click on the purchase button
         </li>
         <li>
-          Click Logout and try to go to Profile again. You'll get redirected to
-          Login.
+          You are "logged in" inside of the checkout modal as the magic.link user.
         </li>
       </ol>
 
-      <p>
-        To learn more about Magic, visit their{' '}
-        <a
-          href="https://docs.magic.link/"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          documentation
-        </a>
-        .
-      </p>
+      {!user && <form action='#' onSubmit={login}>
+        <input type="email" onChange={(evt) => {
+          setEmail(evt.target.value)
+        }} value={email} />
+        <button type="submit">Submit</button>
+      </form>}
 
       {user && (
-        <>
-          <p>Currently logged in as:</p>
-          <pre>{JSON.stringify(user, null, 2)}</pre>
-        </>
+        <button onClick={() => { purchase() }}>Purchase</button>
       )}
-
-      <style jsx>{`
-        li {
-          margin-bottom: 0.5rem;
-        }
-        pre {
-          white-space: pre-wrap;
-          word-wrap: break-word;
-        }
-      `}</style>
     </Layout>
   )
 }

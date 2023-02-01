@@ -1,30 +1,28 @@
 import Head from 'next/head'
 import Header from './header'
 
-const Layout = (props) => (
-  <>
-    <Head>
-      <title>Magic</title>
-      <link rel="icon" href="/favicon.ico" />
-    </Head>
 
-    <Header />
+const Layout = (props) => {
 
-    <main>
-      <div className="container">{props.children}</div>
-    </main>
+  return (
+    <>
+      <Head>
+        <title>Magic + Unlock</title>
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
 
-    <footer>
-      <a
-        href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        Powered by <img src="/vercel.svg" alt="Vercel Logo" />
-      </a>
-    </footer>
+      <Header />
 
-    <style jsx global>{`
+      <main>
+        <div className="container">{props.children}</div>
+
+      </main>
+
+      <footer>
+
+      </footer>
+
+      <style jsx global>{`
       *,
       *::before,
       *::after {
@@ -51,7 +49,8 @@ const Layout = (props) => (
         align-items: center;
       }
     `}</style>
-  </>
-)
+    </>
+  )
+}
 
 export default Layout
