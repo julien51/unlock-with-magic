@@ -4,13 +4,7 @@ const Header = () => {
   return (
     <header>
       <nav>
-        <ul>
-          <li>
-            <Link href="/" legacyBehavior>
-              <a>Home</a>
-            </Link>
-          </li>
-        </ul>
+        <p>Unlock + Magic Demo</p>
       </nav>
       <style jsx>{`
         nav {
