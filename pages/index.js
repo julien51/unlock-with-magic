@@ -7,7 +7,7 @@ import { useMagic } from '../lib/useMagic';
 const Home = () => {
   const [authenticating, setAuthenticating] = useState(false)
   const [user, setUser] = useState(null)
-  const [email, setEmail] = useState('julien.genestoux@gmail.com')
+  const [email, setEmail] = useState()
   const { magic } = useMagic()
   const { purchase, status } = useUnlockPaywall(!!magic)
 
