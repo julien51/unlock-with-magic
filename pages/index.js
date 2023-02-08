@@ -1,8 +1,8 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import Layout from '../components/layout'
 import { useUnlockPaywall } from '../lib/unlock-paywall'
 import { useMagic } from '../lib/useMagic';
-
+import { ethers } from 'ethers';
 
 const Home = () => {
   const [authenticating, setAuthenticating] = useState(false)
